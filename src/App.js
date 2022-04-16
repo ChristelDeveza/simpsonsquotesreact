@@ -1,23 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
+import Simpsonscard from './Components/Simpsonscard';
+import axios from 'axios';
+import React, { useState } from 'react';
+
+const sampleSimpsons = 
+  {
+    quote: "My eyes! The goggles do nothing!",
+    character: "Rainier Wolfcastle",
+    image: "https://cdn.glitch.com/3c3ffadc-3406-4440-bb95-d40ec8fcde72%2FRainierWolfcastle.png?1497567511035",
+    characterDirection: "Right"
+  }
+
 
 function App() {
+  const [simpsons, setSimpsons] = useState(sampleSimpsons);
+
+  function ChangeQuote() {
+    axios.get("https://thesimpsonsquoteapi.glitch.me/quotes")
+    .then((response) => response.data)
+    .then((data) => {
+      setSimpsons(data[0]);
+    });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Simpsonscard simpsons={simpsons}/>
+      <button type="button" onClick={ChangeQuote}>Change quote</button>
     </div>
   );
 }
